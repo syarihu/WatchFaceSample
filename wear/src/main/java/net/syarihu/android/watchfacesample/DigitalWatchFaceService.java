@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.text.format.DateUtils;
 import android.view.SurfaceHolder;
@@ -58,7 +59,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
-            mBackgroundColor = inAmbientMode ? Color.BLACK : Color.DKGRAY;
+            mBackgroundColor = inAmbientMode ? Color.BLACK : ContextCompat.getColor(getApplicationContext(), android.R.color.holo_blue_light);
             invalidate();
         }
 
@@ -78,7 +79,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             String s_time = DateUtils.formatDateTime(
                     DigitalWatchFaceService.this,
                     mCalendar.getTimeInMillis(),
-                    DateUtils.FORMAT_SHOW_TIME
+                    DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR
             );
             Rect s_time_bounds = new Rect();
             mTimePaint.getTextBounds(s_time, 0, s_time.length(), s_time_bounds);
