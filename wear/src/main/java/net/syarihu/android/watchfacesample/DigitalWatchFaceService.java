@@ -32,6 +32,10 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
         Point mTimePosition;
         // 日付の位置を保持するためのPoint
         Point mDatePosition;
+        // 時間の文字の大きさを保持するためのRect
+        Rect mTimeBounds;
+        // 日付の文字の大きさを保持するためのRect
+        Rect mDateBounds;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -54,12 +58,20 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             // 位置を初期化
             mTimePosition = new Point();
             mDatePosition = new Point();
+            // 大きさの初期化
+            mTimeBounds = new Rect();
+            mDateBounds = new Rect();
         }
 
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
-            mBackgroundColor = inAmbientMode ? Color.BLACK : ContextCompat.getColor(getApplicationContext(), android.R.color.holo_blue_light);
+            mBackgroundColor = inAmbientMode ?
+                    Color.BLACK :
+                    ContextCompat.getColor(
+                            getApplicationContext(),
+                            android.R.color.holo_blue_light
+                    );
             invalidate();
         }
 
@@ -81,10 +93,9 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
                     mCalendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR
             );
-            Rect s_time_bounds = new Rect();
-            mTimePaint.getTextBounds(s_time, 0, s_time.length(), s_time_bounds);
+            mTimePaint.getTextBounds(s_time, 0, s_time.length(), mTimeBounds);
             // 中央に配置するための座標を計算する
-            mTimePosition.set(canvas.getWidth() / 2 - s_time_bounds.width() / 2, canvas.getHeight() / 2);
+            mTimePosition.set(canvas.getWidth() / 2 - mTimeBounds.width() / 2, canvas.getHeight() / 2);
             // 日付
             String s_date = DateUtils.formatDateTime(
                     DigitalWatchFaceService.this,
@@ -92,11 +103,10 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
             );
             // 時間のテキストの大きさを再取得
-            mTimePaint.getTextBounds(s_time, 0, s_time.length(), s_time_bounds);
-            Rect s_date_bounds = new Rect();
+            mTimePaint.getTextBounds(s_time, 0, s_time.length(), mTimeBounds);
             // 日付のテキストの大きさを取得
-            mDatePaint.getTextBounds(s_date, 0, s_date.length(), s_date_bounds);
-            mDatePosition.set(canvas.getWidth() / 2 - s_date_bounds.width() / 2, canvas.getHeight() / 2 + s_time_bounds.height() / 2 + (int) (10 / getResources().getDisplayMetrics().density));
+            mDatePaint.getTextBounds(s_date, 0, s_date.length(), mDateBounds);
+            mDatePosition.set(canvas.getWidth() / 2 - mDateBounds.width() / 2, canvas.getHeight() / 2 + mTimeBounds.height() / 2 + (int) (10 / getResources().getDisplayMetrics().density));
 
             canvas.drawColor(mBackgroundColor);
             canvas.drawText(s_time, mTimePosition.x, mTimePosition.y, mTimePaint);
