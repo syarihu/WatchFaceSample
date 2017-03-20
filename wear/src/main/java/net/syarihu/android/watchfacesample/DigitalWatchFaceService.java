@@ -93,17 +93,19 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
                     mCalendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR
             );
+            // 時間のテキストの大きさを再取得
             mTimePaint.getTextBounds(s_time, 0, s_time.length(), mTimeBounds);
             // 中央に配置するための座標を計算する
-            mTimePosition.set(canvas.getWidth() / 2 - mTimeBounds.width() / 2, canvas.getHeight() / 2);
+            mTimePosition.set(
+                    canvas.getWidth() / 2 - mTimeBounds.width() / 2,
+                    canvas.getHeight() / 2
+            );
             // 日付
             String s_date = DateUtils.formatDateTime(
                     DigitalWatchFaceService.this,
                     mCalendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
             );
-            // 時間のテキストの大きさを再取得
-            mTimePaint.getTextBounds(s_time, 0, s_time.length(), mTimeBounds);
             // 日付のテキストの大きさを取得
             mDatePaint.getTextBounds(s_date, 0, s_date.length(), mDateBounds);
             mDatePosition.set(canvas.getWidth() / 2 - mDateBounds.width() / 2, canvas.getHeight() / 2 + mTimeBounds.height() / 2 + (int) (10 / getResources().getDisplayMetrics().density));
