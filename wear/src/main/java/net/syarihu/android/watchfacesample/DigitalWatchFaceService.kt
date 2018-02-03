@@ -22,21 +22,29 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
 
     inner class Engine : CanvasWatchFaceService.Engine() {
         // 時間を取得するためのCalendar
-        private lateinit var calendar: Calendar
+        private val calendar: Calendar = Calendar.getInstance()
         // 時計の背景色
         private var backgroundColor = Color.BLACK
         // 時間を描画するためのPaint
-        private lateinit var timePaint: Paint
+        private val timePaint: Paint = Paint().apply {
+            color = Color.WHITE
+            textSize = 75f
+            isAntiAlias = true
+        }
         // 日付を描画するためのPaint
-        private lateinit var datePaint: Paint
+        private val datePaint: Paint = Paint().apply {
+            color = Color.WHITE
+            textSize = 20f
+            isAntiAlias = true
+        }
         // 時間の位置を保持するためのPoint
-        private lateinit var timePosition: Point
+        private val timePosition: Point = Point()
         // 日付の位置を保持するためのPoint
-        private lateinit var datePosition: Point
+        private val datePosition: Point = Point()
         // 時間の文字の大きさを保持するためのRect
-        private lateinit var timeBounds: Rect
+        private val timeBounds: Rect = Rect()
         // 日付の文字の大きさを保持するためのRect
-        private lateinit var dateBounds: Rect
+        private val dateBounds: Rect = Rect()
         private var complicationDrawableSparseArray =
                 SparseArray<ComplicationDrawable>(ComplicationLocation.getComplicationIds().size).apply {
                     put(ComplicationLocation.LEFT.complicationId, ComplicationDrawable(applicationContext))
@@ -45,28 +53,6 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
 
         override fun onCreate(holder: SurfaceHolder?) {
             super.onCreate(holder)
-            // 時間の文字色やサイズをセット
-            timePaint = Paint()
-            timePaint.color = Color.WHITE
-            timePaint.textSize = 75f
-            timePaint.isAntiAlias = true
-
-            // 日付の文字色やサイズをセット
-            datePaint = Paint()
-            datePaint.color = Color.WHITE
-            datePaint.textSize = 20f
-            datePaint.isAntiAlias = true
-
-            // Calendarを初期化
-            calendar = Calendar.getInstance()
-
-            // 位置を初期化
-            timePosition = Point()
-            datePosition = Point()
-            // 大きさの初期化
-            timeBounds = Rect()
-            dateBounds = Rect()
-
             setActiveComplications(*ComplicationLocation.getComplicationIds())
         }
 
