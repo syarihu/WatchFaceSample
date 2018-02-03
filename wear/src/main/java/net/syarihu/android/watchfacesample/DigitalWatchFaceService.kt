@@ -14,6 +14,8 @@ import android.util.SparseArray
 import android.view.SurfaceHolder
 import java.util.Calendar
 
+private const val COMPLICATION_MARGIN = 10
+
 class DigitalWatchFaceService : CanvasWatchFaceService() {
 
     override fun onCreateEngine(): Engine {
@@ -124,17 +126,17 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
             val complicationSize = canvas.width / 4
             complicationDrawableSparseArray[ComplicationLocation.LEFT.complicationId].run {
                 setBounds(
-                        timePosition.x,
+                        canvas.width / 2 - COMPLICATION_MARGIN - complicationSize,
                         datePosition.y + dateBounds.height(),
-                        timePosition.x + complicationSize,
+                        canvas.width / 2 - COMPLICATION_MARGIN,
                         datePosition.y + dateBounds.height() + complicationSize
                 )
             }
             complicationDrawableSparseArray[ComplicationLocation.RIGHT.complicationId].run {
                 setBounds(
-                        timePosition.x + timeBounds.width() - complicationSize,
+                        canvas.width / 2 + COMPLICATION_MARGIN,
                         datePosition.y + dateBounds.height(),
-                        timePosition.x + timeBounds.width(),
+                        canvas.width / 2 + COMPLICATION_MARGIN + complicationSize,
                         datePosition.y + dateBounds.height() + complicationSize
                 )
             }
