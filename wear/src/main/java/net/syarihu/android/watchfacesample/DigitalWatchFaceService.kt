@@ -6,10 +6,12 @@ import android.graphics.Paint
 import android.graphics.Point
 import android.graphics.Rect
 import android.support.v4.content.ContextCompat
+import android.support.wearable.complications.ComplicationData
+import android.support.wearable.complications.rendering.ComplicationDrawable
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.text.format.DateUtils
+import android.util.SparseArray
 import android.view.SurfaceHolder
-
 import java.util.Calendar
 
 class DigitalWatchFaceService : CanvasWatchFaceService() {
@@ -35,6 +37,11 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
         private lateinit var timeBounds: Rect
         // 日付の文字の大きさを保持するためのRect
         private lateinit var dateBounds: Rect
+        private var complicationDrawableSparseArray =
+                SparseArray<ComplicationDrawable>(ComplicationLocation.getComplicationIds().size).apply {
+                    put(ComplicationLocation.LEFT.complicationId, ComplicationDrawable(applicationContext))
+                    put(ComplicationLocation.RIGHT.complicationId, ComplicationDrawable(applicationContext))
+                }
 
         override fun onCreate(holder: SurfaceHolder?) {
             super.onCreate(holder)
@@ -59,6 +66,8 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
             // 大きさの初期化
             timeBounds = Rect()
             dateBounds = Rect()
+
+            setActiveComplications(*ComplicationLocation.getComplicationIds())
         }
 
         override fun onAmbientModeChanged(inAmbientMode: Boolean) {
@@ -81,8 +90,22 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
 
         override fun onDraw(canvas: Canvas, bounds: Rect) {
             super.onDraw(canvas, bounds)
+            val now = System.currentTimeMillis()
             // 時間を更新
-            calendar.timeInMillis = System.currentTimeMillis()
+            calendar.timeInMillis = now
+            drawWatchFace(canvas)
+            drawComplications(canvas, now)
+        }
+
+        override fun onComplicationDataUpdate(watchFaceComplicationId: Int, data: ComplicationData) {
+            super.onComplicationDataUpdate(watchFaceComplicationId, data)
+            complicationDrawableSparseArray[watchFaceComplicationId].run {
+                setComplicationData(data)
+            }
+            invalidate()
+        }
+
+        private fun drawWatchFace(canvas: Canvas) {
             // 時間
             val s_time = DateUtils.formatDateTime(
                     this@DigitalWatchFaceService,
@@ -109,6 +132,29 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
             canvas.drawColor(backgroundColor)
             canvas.drawText(s_time, timePosition.x.toFloat(), timePosition.y.toFloat(), timePaint)
             canvas.drawText(s_date, datePosition.x.toFloat(), datePosition.y.toFloat(), datePaint)
+        }
+
+        private fun drawComplications(canvas: Canvas, currentTimeMillis: Long) {
+            val complicationSize = canvas.width / 4
+            complicationDrawableSparseArray[ComplicationLocation.LEFT.complicationId].run {
+                setBounds(
+                        timePosition.x,
+                        datePosition.y + dateBounds.height(),
+                        timePosition.x + complicationSize,
+                        datePosition.y + dateBounds.height() + complicationSize
+                )
+            }
+            complicationDrawableSparseArray[ComplicationLocation.RIGHT.complicationId].run {
+                setBounds(
+                        timePosition.x + timeBounds.width() - complicationSize,
+                        datePosition.y + dateBounds.height(),
+                        timePosition.x + timeBounds.width(),
+                        datePosition.y + dateBounds.height() + complicationSize
+                )
+            }
+            ComplicationLocation.getComplicationIds().forEach { complicationId ->
+                complicationDrawableSparseArray[complicationId].draw(canvas, currentTimeMillis)
+            }
         }
     }
 }
