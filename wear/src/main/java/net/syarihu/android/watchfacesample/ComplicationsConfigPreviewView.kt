@@ -9,7 +9,7 @@ import android.graphics.Rect
 import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.view.View
-import java.util.*
+import java.util.Calendar
 
 class ComplicationsConfigPreviewView : View {
     private var calendar: Calendar = Calendar.getInstance()
