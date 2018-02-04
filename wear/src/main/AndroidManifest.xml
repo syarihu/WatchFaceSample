@@ -41,6 +41,39 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".NoDataProviderService"
+            android:icon="@drawable/ic_none_24dp"
+            android:label="@string/no_data"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT,LONG_TEXT,SMALL_IMAGE,ICON,RANGED_VALUE,LARGE_IMAGE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+        <service
+            android:name=".RangedValueProviderService"
+            android:icon="@drawable/ic_donut_large_24dp"
+            android:label="@string/ranged_value"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="RANGED_VALUE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+
         <activity android:name="android.support.wearable.complications.ComplicationHelperActivity" />
         <activity android:name=".ComplicationsConfigActivity">
             <intent-filter>
@@ -50,6 +83,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".ComplicationReceiver" />
 
     </application>
 
