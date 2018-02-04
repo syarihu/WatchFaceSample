@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat
 import android.support.wearable.complications.ComplicationData
 import android.support.wearable.complications.rendering.ComplicationDrawable
 import android.support.wearable.watchface.CanvasWatchFaceService
+import android.support.wearable.watchface.WatchFaceService
+import android.support.wearable.watchface.WatchFaceStyle
 import android.text.format.DateUtils
 import android.util.SparseArray
 import android.view.SurfaceHolder
@@ -55,6 +57,11 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
 
         override fun onCreate(holder: SurfaceHolder?) {
             super.onCreate(holder)
+            setWatchFaceStyle(
+                    WatchFaceStyle.Builder(this@DigitalWatchFaceService)
+                            .setAcceptsTapEvents(true)
+                            .setHideNotificationIndicator(true)
+                            .build())
             setActiveComplications(*ComplicationLocation.getComplicationIds())
         }
 
@@ -91,6 +98,17 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
                 setComplicationData(data)
             }
             invalidate()
+        }
+
+        override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
+            super.onTapCommand(tapType, x, y, eventTime)
+            if (tapType == WatchFaceService.TAP_TYPE_TAP) {
+                ComplicationLocation.getComplicationIds().forEach {
+                    val successfulTap = complicationDrawableSparseArray[it].onTap(x, y)
+                    if (successfulTap)
+                        return
+                }
+            }
         }
 
         private fun drawWatchFace(canvas: Canvas) {
