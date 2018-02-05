@@ -113,31 +113,31 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
 
         private fun drawWatchFace(canvas: Canvas) {
             // 時間
-            val s_time = DateUtils.formatDateTime(
+            val strTime = DateUtils.formatDateTime(
                     this@DigitalWatchFaceService,
                     calendar.timeInMillis,
                     DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
             )
             // 時間のテキストの大きさを再取得
-            timePaint.getTextBounds(s_time, 0, s_time.length, timeBounds)
+            timePaint.getTextBounds(strTime, 0, strTime.length, timeBounds)
             // 中央に配置するための座標を計算する
             timePosition.set(
                     canvas.width / 2 - timeBounds.width() / 2,
                     canvas.height / 2
             )
             // 日付
-            val s_date = DateUtils.formatDateTime(
+            val strDate = DateUtils.formatDateTime(
                     this@DigitalWatchFaceService,
                     calendar.timeInMillis,
                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_WEEKDAY
             )
             // 日付のテキストの大きさを取得
-            datePaint.getTextBounds(s_date, 0, s_date.length, dateBounds)
+            datePaint.getTextBounds(strDate, 0, strDate.length, dateBounds)
             datePosition.set(canvas.width / 2 - dateBounds.width() / 2, canvas.height / 2 + timeBounds.height() / 2 + (10 / resources.displayMetrics.density).toInt())
 
             canvas.drawColor(backgroundColor)
-            canvas.drawText(s_time, timePosition.x.toFloat(), timePosition.y.toFloat(), timePaint)
-            canvas.drawText(s_date, datePosition.x.toFloat(), datePosition.y.toFloat(), datePaint)
+            canvas.drawText(strTime, timePosition.x.toFloat(), timePosition.y.toFloat(), timePaint)
+            canvas.drawText(strDate, datePosition.x.toFloat(), datePosition.y.toFloat(), datePaint)
         }
 
         private fun drawComplications(canvas: Canvas, currentTimeMillis: Long) {
