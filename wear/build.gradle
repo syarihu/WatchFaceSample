@@ -7,7 +7,7 @@ android {
     buildToolsVersion '27.0.2'
     defaultConfig {
         applicationId "net.syarihu.android.watchfacesample"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
