@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Point
 import android.graphics.Rect
-import android.support.v4.content.ContextCompat
 import android.support.wearable.complications.ComplicationData
 import android.support.wearable.complications.rendering.ComplicationDrawable
 import android.support.wearable.watchface.CanvasWatchFaceService
@@ -70,10 +69,7 @@ class DigitalWatchFaceService : CanvasWatchFaceService() {
             backgroundColor = if (inAmbientMode)
                 Color.BLACK
             else
-                ContextCompat.getColor(
-                        applicationContext,
-                        android.R.color.holo_blue_light
-                )
+                applicationContext.getColor(android.R.color.holo_blue_light)
             invalidate()
         }
 

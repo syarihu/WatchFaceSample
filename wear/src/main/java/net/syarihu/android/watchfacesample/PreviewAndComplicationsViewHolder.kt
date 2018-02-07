@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.support.wearable.complications.ComplicationHelperActivity
 import android.support.wearable.complications.ComplicationProviderInfo
@@ -28,7 +27,7 @@ class PreviewAndComplicationsViewHolder(
             context: Context,
             complicationClickListener: (complicationLocation: ComplicationLocation) -> Unit
     ) {
-        val defaultDrawable = ContextCompat.getDrawable(context, R.drawable.add_complication)
+        val defaultDrawable = context.getDrawable(R.drawable.add_complication)
         binding.run {
             leftComplication.run {
                 setImageDrawable(defaultDrawable)
@@ -79,7 +78,7 @@ class PreviewAndComplicationsViewHolder(
         }
         if (complicationProviderInfo == null) {
             button.setImageDrawable(
-                    ContextCompat.getDrawable(button.context, R.drawable.add_complication))
+                    button.context.getDrawable(R.drawable.add_complication))
             background.visibility = View.INVISIBLE
             return
         }
