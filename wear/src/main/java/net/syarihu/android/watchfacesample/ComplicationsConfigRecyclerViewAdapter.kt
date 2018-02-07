@@ -13,7 +13,7 @@ class ComplicationsConfigRecyclerViewAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val providerInfoRetriever: ProviderInfoRetriever =
-            ProviderInfoRetriever(context, Executors.newCachedThreadPool()).apply {
+            ProviderInfoRetriever(context.applicationContext, Executors.newCachedThreadPool()).apply {
                 init()
             }
     private var selectedComplicationLocation: ComplicationLocation? = null
