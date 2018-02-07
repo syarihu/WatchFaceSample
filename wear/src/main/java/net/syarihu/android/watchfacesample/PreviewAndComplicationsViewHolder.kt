@@ -55,7 +55,7 @@ class PreviewAndComplicationsViewHolder(
             else -> null
         }
         complicationLocation?.let {
-            complicationClickListener.invoke(it)
+            complicationClickListener(it)
             launchComplicationHelperActivity(view.context, it)
         }
     }
