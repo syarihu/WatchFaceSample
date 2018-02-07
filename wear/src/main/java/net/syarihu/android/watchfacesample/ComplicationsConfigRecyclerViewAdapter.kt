@@ -56,7 +56,7 @@ class ComplicationsConfigRecyclerViewAdapter(
     }
 
     fun updateComplicationView(
-            complicationProviderInfo: ComplicationProviderInfo,
+            complicationProviderInfo: ComplicationProviderInfo?,
             complicationLocation: ComplicationLocation
     ) {
         previewAndComplicationsViewHolder?.updateComplicationViews(
@@ -64,7 +64,7 @@ class ComplicationsConfigRecyclerViewAdapter(
         )
     }
 
-    fun updateSelectedComplication(complicationProviderInfo: ComplicationProviderInfo) {
+    fun updateSelectedComplication(complicationProviderInfo: ComplicationProviderInfo?) {
         val complicationLocation = selectedComplicationLocation ?: return
         updateComplicationView(complicationProviderInfo, complicationLocation)
     }
